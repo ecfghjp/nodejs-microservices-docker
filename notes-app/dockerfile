@@ -1,0 +1,9 @@
+#Download node docker image
+FROM node:12.9.0
+# create a work directory on docker image
+WORKDIR /app
+
+COPY package.json /app
+RUN npm install --save
+COPY . /app
+CMD ["npm","start"]

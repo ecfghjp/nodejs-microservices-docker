@@ -1,0 +1,7 @@
+- Add created date and updated date to note and users model
+- Environment variables add  and take values such as prod dev and test
+- Add test cases
+- add exception handling
+- add update and delete functionality
+- only chose notes that are not started and in progress
+- functionality for progress notes, text box or edit etc - important

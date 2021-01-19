@@ -1,0 +1,27 @@
+version: '3'
+services:
+       users-app:
+           restart: always
+           build: ../users-app/
+           env_file:
+            - ./.env
+           ports:
+            - "${NOTES_PORT}:${NOTES_MAPPED_PORT}"
+           depends_on:
+            - mongo
+       notes-app:
+           restart: always
+           build: ../notes-app/
+           env_file:
+            - ./.env
+           ports:
+            - "${USERS_PORT}:${USERS_MAPPED_PORT}"
+           depends_on:
+            - mongo
+       mongo:
+           restart: unless-stopped
+           build: ./db  
+           env_file:
+            - ./.env
+           ports:
+            - "${DB_PORT}:${DB_PORT}"

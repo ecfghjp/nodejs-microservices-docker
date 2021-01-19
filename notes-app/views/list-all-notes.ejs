@@ -1,0 +1,19 @@
+  <form action="/" method="GET">
+  <div class="imgcontainer"/>
+
+  <div class="container">
+    <label for="title"><b>All Notes for <%=notes[0].username%></b></label>
+  </div><br>
+  <% for (var i = 0; i < notes.length; i++) {%>
+    <table style="width:100%">
+      <tr>
+        <td> <%=notes[i].title %></td>
+        <td> <%=notes[i].content %></td>
+        <td> <%=notes[i].status %></td>
+      </tr>&nbsp;
+      <table>
+      
+  <%}%>
+    <button type="submit">Create</button>&nbsp;
+</div>
+</form>
