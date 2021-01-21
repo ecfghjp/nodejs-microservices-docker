@@ -2,7 +2,7 @@ const User = require('../models/user.model.js');
 const request = require('request');
 
 
-const noteService = 'http://localhost:3001';
+const noteService = 'http://localhost:9001';
 
 
 exports.create = (req, res) => {
@@ -19,11 +19,14 @@ exports.create = (req, res) => {
         //call notes api to get notes and display notes in here
         request.get({
             headers: {'content-type': 'application/json'},
-            url: `${noteService}/notes/${req.body.username}`
+            url: `${noteService}/notes/abhishek.ad.sharma`
+            //url: `${noteService}/notes/${req.body.username}`
         })
         //res.render("index", {username:req.body.username,message:"Welcome back "});
         
     }
+
+    else{
     // Create a user
     user = new User({
         username: req.body.username,
@@ -41,6 +44,7 @@ exports.create = (req, res) => {
             message: err.message || "Some error occurred while creating the User."
         });
     });
+}
 
 };
 

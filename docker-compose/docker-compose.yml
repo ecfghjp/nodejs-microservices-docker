@@ -6,7 +6,7 @@ services:
            env_file:
             - ./.env
            ports:
-            - "${NOTES_PORT}:${NOTES_MAPPED_PORT}"
+            - "${USERS_MAPPED_PORT}:${USERS_PORT}"
            depends_on:
             - mongo
        notes-app:
@@ -15,7 +15,7 @@ services:
            env_file:
             - ./.env
            ports:
-            - "${USERS_PORT}:${USERS_MAPPED_PORT}"
+            - "${NOTES_MAPPED_PORT}:${NOTES_PORT}"
            depends_on:
             - mongo
        mongo:
