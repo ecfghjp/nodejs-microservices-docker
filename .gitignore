@@ -1,0 +1,2 @@
+# ignore nodemodules saved locally
+/*/node_modules/*
