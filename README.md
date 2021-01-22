@@ -10,12 +10,21 @@ Docker-compose is used compose the 2 apps and use the configuration
 ### Notes Microservice
 
 ### Interaction between microservices
+As an example I have added a few routes in user service to show the routing from users service to notes service
 
 ### Exception Handling
 
 ### Unit Testing and Integration Testing
 
 ### Dockerise using Docker File and Docker Compose
+The example app uses docker compose to build and run the docker containers and run 3 apps:]
+
+***users-app***
+***notes-app***
+***mongo-db***
+
+Use command ***./build.sh*** in root directory to and run the project
+
 
 ### Use different environments(dev, prod) and have different set of ßproperties
 
