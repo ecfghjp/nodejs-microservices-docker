@@ -20,7 +20,9 @@ As an example I have added a few routes in user service to show the routing from
 The example app uses docker compose to build and run the docker containers and run 3 apps:]
 
 ***users-app***
+
 ***notes-app***
+
 ***mongo-db***
 
 Use command ***./build.sh*** in root directory to and run the project
