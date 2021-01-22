@@ -2,7 +2,6 @@ const User = require('../models/user.model.js');
 const request = require('request');
 
 
-const noteService = 'http://localhost:9001';
 
 
 exports.create = (req, res) => {
@@ -13,38 +12,30 @@ exports.create = (req, res) => {
     }
     //find user if exists , call notes api and display 
     console.log("calling user with username "+req.body.username);
-
-    if(User.exists(req.body.username)){
-        console.log("existing user");
-        //call notes api to get notes and display notes in here
-        request.get({
-            headers: {'content-type': 'application/json'},
-            url: `${noteService}/notes/abhishek.ad.sharma`
-            //url: `${noteService}/notes/${req.body.username}`
-        })
-        //res.render("index", {username:req.body.username,message:"Welcome back "});
-        
-    }
-
-    else{
-    // Create a user
-    user = new User({
-        username: req.body.username,
-        email: req.body.email,
-        password : req.body.password
-    });
-
+    //find user
+    User.find({username:req.body.username},function(err,user){
+        if(user.length){
+            console.log("user exists :: "+user);
+            res.send(user);
+        }else{
+        // Create a user
+        user = new User({
+            username: req.body.username,
+            email: req.body.email,
+            password : req.body.password
+        });
     // Save user in the database
     user.save()
-    .then(data => {
-        //res.send(data);
-        res.render("index", {username:req.body.username,message:"Welcome "});
-    }).catch(err => {
-        res.status(500).send({
+        .then(data => {
+            res.send(data);
+        }).catch(err => {
+            res.status(500).send({
             message: err.message || "Some error occurred while creating the User."
+            });
         });
+        }
     });
-}
+    
 
 };
 
@@ -52,7 +43,13 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     User.find()
     .then(users => {
-        res.send(users);
+        if(users && users.length){
+            res.send(users);
+        }else{
+            res.status(404).send({
+                message: "No Users in database"
+            });
+        }
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Some error occurred while retrieving users."
@@ -69,20 +66,18 @@ exports.login = (req,res) =>{
 
 
 exports.findOne = (req, res) => {
-    User.findOne(req.params.username)
+
+    User.find({username:req.params.username})
     .then(user => {
-        if(!user) {
+        if(user.length){
+            res.send(user);
+        }
+        else {
             return res.status(404).send({
                 message: "User not found with id " + req.params.username
             });            
         }
-        res.send(user);
     }).catch(err => {
-        if(err.kind === 'ObjectId') {
-            return res.status(404).send({
-                message: "User not found with id " + req.params.username
-            });                
-        }
         return res.status(500).send({
             message: "Error retrieving User with id " + req.params.username
         });
@@ -90,7 +85,24 @@ exports.findOne = (req, res) => {
 
 };
 
-exports.getAllNotes = (req, res) => {
+exports.getAllNotesForUser = (req, res) => {
+  const noteService = 'http://notes-app:3001/notes/'+req.params.username;
+  request(noteService,(err, response) => {
+    if (err) { 
+        return res.status(500).send({
+            message: err.message || "Some error occurred while retrieving users"
+        }); 
+    }
+
+    else if(response.body && response.body.length){
+        return res.status(200).send(response.body);
+    }else{
+        return res.status(404).send({
+        message: `No Notes found for ${req.params.username}`
+    }); 
+    }
+        
+    });
 
 };
 
@@ -102,4 +114,27 @@ exports.update = (req, res) => {
 // Delete a note with the specified noteId in the request
 exports.delete = (req, res) => {
 
+};
+
+exports.allnotes = async (username) => {
+
+    const options = {
+
+        uri: noteService+username,
+        json: true,
+        resolveWithFullResponse: true,
+        method: 'GET'
+    };
+
+    comnsole.debug("calling response api with "+options);
+
+
+    return request(options).then((response) => {
+        comnsole.debug("response is "+response.body);
+        return response.body
+
+    }).catch((err) => {
+        console.log(err);
+        console.log('errorstatuscode:' + err.statusCode)
+    })
 };

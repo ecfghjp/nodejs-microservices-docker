@@ -59,8 +59,8 @@ exports.findAllNotesUser = (req, res) => {
                 message: "Note not found with id " + req.params.username
             });            
         }
-        res.render('list-all-notes',{notes:notes});
-        //res.send(notes);
+        //res.render('list-all-notes',{notes:notes});
+        res.send(notes);
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
@@ -75,6 +75,7 @@ exports.findAllNotesUser = (req, res) => {
 
 // Find a single note with a noteId
 exports.findOne = (req, res) => {
+    console.debug("Calling with ID")
     Note.findById(req.params.noteId)
     .then(note => {
         if(!note) {
